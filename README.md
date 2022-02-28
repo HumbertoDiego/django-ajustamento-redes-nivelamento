@@ -1,9 +1,7 @@
 # django-ajustamento-redes-nivelamento
 IMPLEMENTAÇÃO DE SISTEMA PARA CÁLCULOS GEODÉSICOS EM AMBIENTE COMPUTACIONAL LIVRE: AJUSTAMENTO DE REDE DE NIVELAMENTO GEOMÉTRICO 
 
-Trabalho de conclusão de curso de: Humberto Diego Aguiar Alves
-Orientadores: Prof. Leonardo Castro de Oliveira
-              Profª. Heloísa Alves Silva Marques
+Trabalho de conclusão de curso de Engenharia Cartográfica no Instituto Militar de Engenharia.
 
 ![r1](imgs/res.jpg "Tela do Resolutado do ajustamento")
 
