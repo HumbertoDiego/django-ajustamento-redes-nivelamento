@@ -1,0 +1,16 @@
+h1,h2,h3,h4{font-family: serif;}
+
+.boxout,.box{
+padding:15px;
+background-color:#fff;
+min-height:0;
+-webkit-box-shadow:0 0 12px 1px rgba(87,87,87,.2);
+box-shadow:0 0 12px 1px rgba(87,87,87,.2);
+margin-right: auto;
+margin-left: auto;
+margin-bottom: 40px;
+}
+
+.boxout{
+width: 768px
+}
