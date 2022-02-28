@@ -11,7 +11,10 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'se6alunos/css/bootstrap.min.css' %}"/>
     <link rel="shortcut icon" href="{% static 'se6alunos/images/favicon.ico' %}" type="image/x-icon">
-      <style>
+      <!-- The javascript =============================== -->
+    <script src="{% static 'se6alunos/js/jquery.js' %}" type="text/javascript"></script>
+    <script src="{% static 'se6alunos/js/bootstrap.min.js' %}"></script>
+    <style>
       .carousel-inner img {
           width: 100%; /* Set width to 100% */
           margin: auto;
@@ -80,7 +83,7 @@
         </ul>
         <ul class="nav navbar-nav">
           <li class="dropdown" data-w2pmenulevel="l0">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Projetos<span class="caret"> </span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Projetos<span class="caret"> </span></a>
             <ul class="dropdown-menu">
               <li><a href="/se6alunos/ajunivel">AjuNivel</a></li>
             </ul>
@@ -154,6 +157,5 @@
         </div>
     </div>
   </footer>
-  <!-- The javascript =============================== -->
-  <script src="{% static 'se6alunos/js/bootstrap.min.js' %}"></script>
+
 </body>
