@@ -12,6 +12,9 @@ Orientadores: Prof. Leonardo Castro de Oliveira
 
 ## 2. Utilização
 
+No formulário, envie um arquivo texto formatado contendo as equações e as variáveis a serem ajsutadas. Deixe o checkbox `automático==True` para testar os desvios-padrões que passam no Teste-Chi Quadrado.
+
+Siga as instruções das imagesn abaixo para formatar adequadamente o arquivo texto.
 
 ![d1](imgs/demo1.jpg "Demonstração")
 
