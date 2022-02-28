@@ -1,0 +1,232 @@
+
+#wrapper {
+    padding-left: 0;
+    margin-top: 63px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+    padding-left: 210px;
+}
+
+#sidebar-wrapper {
+    top: 63px;
+    z-index: 1000;
+    position: fixed;
+    left: 210px;
+    width: 0;
+    height: 100%;
+    margin-left: -210px;
+    overflow-y: auto;
+    background: #3E3F3A;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 210px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    padding: 3px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -210px;
+}
+
+/* Sidebar Styles */
+
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 210px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav li {
+    text-indent: 20px;
+    line-height: 40px;
+}
+
+#logo {
+	text-indent:55px;
+	padding:5px;
+	background-color:grey
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #ccc;
+}
+
+.sidebar-nav li a:hover {
+    text-decoration: none;
+    color: #fff;
+    background: rgba(255,255,255,0.2);
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus,
+.sidebar-nav li a.jqactivate {
+    text-decoration: none;
+	color: #000;
+	background: rgba(255,255,255,1);
+	border: 1px solid rgba(255,255,255,0.3);
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    font-size: 18px;
+    line-height: 60px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: #999999;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #fff;
+    background: none;
+}
+
+.sidebtn {
+  display: inline-block;
+  padding: 1px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.6;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.sidebtn:focus,
+.sidebtn:active:focus,
+.sidebtn.active:focus,
+.sidebtn.focus,
+.sidebtn:active.focus,
+.sidebtn.active.focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.sidebtn:hover,
+.sidebtn:focus,
+.sidebtn.focus {
+  color: #333;
+  text-decoration: none;
+}
+.sidebtn:active,
+.sidebtn.active {
+  background-image: none;
+  outline: 0;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+}
+
+.sidebtn-default {
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+}
+.sidebtn-default:focus,
+.sidebtn-default.focus {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #8c8c8c;
+}
+.sidebtn-default:hover {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.sidebtn-default:active,
+.sidebtn-default.active,
+.open > .dropdown-toggle.sidebtn-default {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.sidebtn-default:active:hover,
+.sidebtn-default.active:hover,
+.open > .dropdown-toggle.sidebtn-default:hover,
+.sidebtn-default:active:focus,
+.sidebtn-default.active:focus,
+.open > .dropdown-toggle.sidebtn-default:focus,
+.sidebtn-default:active.focus,
+.sidebtn-default.active.focus,
+.open > .dropdown-toggle.sidebtn-default.focus {
+  color: #333;
+  background-color: #d4d4d4;
+  border-color: #8c8c8c;
+}
+.sidebtn-default:active,
+.sidebtn-default.active,
+.open > .dropdown-toggle.sidebtn-default {
+  background-image: none;
+}
+.sidebtn-default.disabled:hover,
+.sidebtn-default[disabled]:hover,
+fieldset[disabled] .sidebtn-default:hover,
+.sidebtn-default.disabled:focus,
+.sidebtn-default[disabled]:focus,
+fieldset[disabled] .sidebtn-default:focus,
+.sidebtn-default.disabled.focus,
+.sidebtn-default[disabled].focus,
+fieldset[disabled] .sidebtn-default.focus {
+  background-color: #fff;
+  border-color: #ccc;
+}
+
+
+@media(min-width:768px) {
+    #wrapper {
+        padding-left: 210px;
+		padding-top: 3px;
+    }
+
+    #wrapper.toggled {
+        padding-left: 0;
+    }
+
+    #sidebar-wrapper {
+        width: 210px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        width: 0;
+    }
+
+    #page-content-wrapper {
+        padding-left: 10px;
+        position: relative;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+    }
+}
