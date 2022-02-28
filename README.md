@@ -13,12 +13,12 @@ Orientadores: Prof. Leonardo Castro de Oliveira
 ## 2. Utilização
 
 
-![d1](imgs/d1.jpg "Demonstração")
+![d1](imgs/demo1.jpg "Demonstração")
 
-![d2](imgs/d2.jpg "Demonstração")
+![d2](imgs/demo2.jpg "Demonstração")
 
-![d3](imgs/d3.jpg "Demonstração")
+![d3](imgs/demo3.jpg "Demonstração")
 
-![d4](imgs/d4.jpg "Demonstração")
+![d4](imgs/demo4.jpg "Demonstração")
 
-![d5](imgs/d5.jpg "Demonstração")
+![d5](imgs/demo5.jpg "Demonstração")
