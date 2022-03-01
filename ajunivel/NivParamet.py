@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
+import matplotlib
+matplotlib.use("agg")
 import matplotlib.pyplot as plt
-import os
 from . import Mtools
 from scipy.stats import chi2
 from numpy import size, array, linspace, mean
 from math import sqrt
 import pandas
+import io
+import base64
 
 def parametrico(c, x , auto, dp_na_4col):
     ############ 1ª etapa - leitura do arquivo texto
@@ -158,29 +161,14 @@ def parametrico(c, x , auto, dp_na_4col):
             aceitar.append('aceito')
         else:
             aceitar.append('ñ aceito')
-    #  print aceitar
-    # print 'QtPts = ', qtPontos
-    # print 'QtEq = ', qtEq
-#     print 'Lb = ', pandas.DataFrame(Lb)
-    # print 'VetorIncognitasX = ' , Incognitas
-#     print  'A = ', pandas.DataFrame(A)
-#     print 'Pesos = ', pandas.DataFrame(pesos)
-#     print 'X = ', pandas.DataFrame(X)
-#     print 'V = ', pandas.DataFrame(V)
-#     print 'La = ', pandas.DataFrame(La)
-#     print "Sigma2(Desvio padrao de referencia - posteriori) = ", sigmaposteriori
-    # print "Sigmapriori = ", sigmapriori
-    # print "SigmaXa (MVC do valores de X) = ", pandas.DataFrame(SigmaXa)
-    # print 'desvioPadrao_h[1,2,3] = ', desvio_hi
-    # print "SigmaLa = ", SigmaLa
-#     print "SigmaV (MVC dos residuos) = ", pandas.DataFrame(SigmaV)
+    #######################################   Grafico Analise Qui-quadrado    ############################
+    base64_fdpqui= grafico_teste_hipotesebicaudal(quicalc, signif, df)
+
     dicionario = dict(c=c, qtPontos=qtPontos, qtEq=qtEq, df=df, Lb=Lb, Incognitas=Incognitas, x=x, A=A, dp=dp, aviso=aviso, var=var, pesos=pesos, X=X,
                       V=V, La=La, sigmaposteriori=sigmaposteriori, sigmapriori=1, SigmaXa=SigmaXa, desvio_hi=desvio_hi, desvio_vi=desvio_vi, wi=wi,
                       a0=a0, aceitabaarda=aceitabaarda, aceitar=aceitar,SigmaLa=SigmaLa, SigmaV=SigmaV, signif=signif, quitabmaxbicaudal = quitabmax,
-                      quitabminbicaudal = quitabmin, quicalc = quicalc, dp_na_4col=dp_na_4col)
-    #######################################   Grafico Analise Qui-quadrado    ############################
+                      quitabminbicaudal = quitabmin, quicalc = quicalc, dp_na_4col=dp_na_4col,base64_fdpqui=base64_fdpqui)
     #print(dicionario)
-    #grafico_teste_hipotesebicaudal(quicalc, signif, df)
     return dicionario
 
 def grafico_teste_hipotesebicaudal(quicalc, signif, df):
@@ -229,9 +217,15 @@ def grafico_teste_hipotesebicaudal(quicalc, signif, df):
         limit = [0, chi2.ppf(0.99, df), 0, maxY]
     plt.axis(limit)
     plt.grid(True)
-    plt.xlabel('Significancia')
+    plt.xlabel('Significância')
     plt.ylabel('Chi^2(signif, %s gl)' %df)
-    path2 =  os.path.join(os.getcwd(),'static','se6alunos','images','fdpqui.png')
-    print(path2)
-    plt.savefig(path2)
-    return dict()
+    #path2 =  os.path.join(os.getcwd(),'ajunivel','static','images','fdpqui.png')
+    #print(path2)
+    #plt.savefig(path2)
+    my_stringIObytes = io.BytesIO()
+    plt.savefig(my_stringIObytes, format='jpg')
+    plt.close()
+    my_stringIObytes.seek(0)
+    my_base64_jpgData = base64.b64encode(my_stringIObytes.read())
+    #print(my_base64_jpgData)
+    return my_base64_jpgData.decode("utf-8")

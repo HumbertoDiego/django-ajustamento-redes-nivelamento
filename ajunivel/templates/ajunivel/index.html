@@ -122,7 +122,8 @@
                                    <td>{{ retorno.quitabmaxbicaudal }}</td>
                                 </tr>
                             </table>
-                            <img src="{% static 'ajunivel/images/fdpqui.png' %}" alt = "fdp Qui-square" >
+                            <img src="data:image/jpeg;base64, {{ retorno.base64_fdpqui }}" alt = "fdp Qui-square" >
+                            <!-- <img src="{% static 'ajunivel/images/fdpqui.png' %}" alt = "fdp Qui-square" > -->
                             <p>&nbsp;</p><h4 id="tab4">Análise da qualidade do ajustamento - Teste estatístico para Identificação das Observações com Erro Grosseiro (Baarda): &#9661;</h4>
                             <table class = 'table table-hover'  style="width:80%" id ="tabela4" >
                                 <tr>
