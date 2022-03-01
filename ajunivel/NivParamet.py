@@ -2,17 +2,17 @@
 import matplotlib
 matplotlib.use("agg")
 import matplotlib.pyplot as plt
-from . import Mtools
 from scipy.stats import chi2
-from numpy import size, array, linspace, mean
+from numpy import size, array, linspace, zeros, size
+from numpy.linalg import inv
 from math import sqrt
-import pandas
+from pandas import DataFrame
 import io
 import base64
 
 def parametrico(c, x , auto, dp_na_4col):
     ############ 1ª etapa - leitura do arquivo texto
-    print(pandas.DataFrame(c))
+    print(DataFrame(c))
     ############ 2ª etapa - pré processamento
     # gravando os dados em variáveis separadas
     re = []
@@ -93,17 +93,17 @@ def parametrico(c, x , auto, dp_na_4col):
 
     ###   Modelagem Matemática: Método paramétrico de ajuste dos parâmetros X=(h1,h2,h3,...)
     ##    A*X = Lb + V    e  Xa = inv(A'*P*A)*(A'*P*L)
-    A= Mtools.montA(vantes, res)
+    A= montA(vantes, res)
     # Montagem da matriz P de pesos
     sigmapriori = 1 ## em [mm^2]
     if dp_na_4col:
         auto = False
-        SigmaLb , dp = Mtools.montSigmaLb_dp_na_4col(dist, dpinjuc)
+        SigmaLb , dp = montSigmaLb_dp_na_4col(dist, dpinjuc)
     else:
-        SigmaLb , dp = Mtools.montSigmaLb(dist, x, dpinjuc)
+        SigmaLb , dp = montSigmaLb(dist, x, dpinjuc)
     pesos = sigmapriori*SigmaLb
     # X=inv(A'PA)A'PLb
-    X= Mtools.Xa_parametrico(A,pesos,Lb)
+    X= Xa_parametrico(A,pesos,Lb)
     # V=A*X-Lb  [m]
     V=A.dot(X)-Lb
 
@@ -120,7 +120,7 @@ def parametrico(c, x , auto, dp_na_4col):
     if auto:
         if quicalc>quicalcideal:
             while (quicalc-quicalcideal>0.5):
-                SigmaLb , dp = Mtools.montSigmaLb(dist, x, dpinjuc)
+                SigmaLb , dp = montSigmaLb(dist, x, dpinjuc)
                 # nãp precisa repetir a fórmula X=inv(A'PA)A'PLb pq X é cte independente de variações lineares em Pesos
                 # se X, A, Lb são ctes então V=A.dot(X)-Lb é cte
                 quicalc = V.transpose().dot(SigmaLb).dot(V)
@@ -128,7 +128,7 @@ def parametrico(c, x , auto, dp_na_4col):
         else:
             while (quicalcideal-quicalc>0.1):
                 print(x)
-                SigmaLb , dp = Mtools.montSigmaLb(dist, x, dpinjuc)
+                SigmaLb , dp = montSigmaLb(dist, x, dpinjuc)
                 # nãp precisa repetir a fórmula X=inv(A'PA)A'PLb pq X é cte independente de variações lineares em Pesos
                 # se X, A, Lb são ctes então V=A.dot(X)-Lb é cte
                 quicalc = V.transpose().dot(SigmaLb).dot(V)
@@ -145,14 +145,14 @@ def parametrico(c, x , auto, dp_na_4col):
     var = dp*dp
 
     ####################################### MVC ##############################################
-    SigmaXa = Mtools.estatistics_sigmaXa(sigmaposteriori, A, pesos) ## em [m^2]
-    SigmaLa = Mtools.estatistics_sigmaLa(sigmaposteriori, A, pesos) ## em [m^2]
-    SigmaV = Mtools.estatistics_sigmaV(sigmapriori, A, pesos) ## em [m^2]
-    desvio_hi = Mtools.get_dp_hi(SigmaXa) ## em [m]
-    desvio_vi = Mtools.get_dp_vi(SigmaV) ## em [m]
+    SigmaXa = estatistics_sigmaXa(sigmaposteriori, A, pesos) ## em [m^2]
+    SigmaLa = estatistics_sigmaLa(sigmaposteriori, A, pesos) ## em [m^2]
+    SigmaV = estatistics_sigmaV(sigmapriori, A, pesos) ## em [m^2]
+    desvio_hi = get_dp_hi(SigmaXa) ## em [m]
+    desvio_vi = get_dp_vi(SigmaV) ## em [m]
 
     ####################################### Teste Baarda ######################################
-    wi =  Mtools.wi(V, desvio_vi)
+    wi =  Wi(V, desvio_vi)
     a0 = signif/qtEq
     aceitabaarda = sqrt(chi2.pdf(a0, 1))
     aceitar = []
@@ -229,3 +229,106 @@ def grafico_teste_hipotesebicaudal(quicalc, signif, df):
     my_base64_jpgData = base64.b64encode(my_stringIObytes.read())
     #print(my_base64_jpgData)
     return my_base64_jpgData.decode("utf-8")
+
+def txt2matrix(filename):
+    f=open(filename, 'r')
+    c=[]
+    for line in f:
+        c.append(line.split())
+    d = array(c, float)
+    return d
+
+def montSigmaLb(dist, X, dpinjuc):
+    P = zeros((size(dist, 0), size(dist, 0)), float)
+    dp = []
+    for i in range(size(dist, 0)):
+        if dist[i] == 0:
+            dp.append(dpinjuc[i])
+        else:
+            dp.append(X*sqrt(dist[i])/1000) # dp em m
+    for i in range(size(dist, 0)):
+        P[i, i] = 1/(dp[i]*dp[i]) # sigmaprio convertido pra metro^2
+    return P, dp
+
+def montSigmaLb_dp_na_4col(dist, dpinjuc):
+    P = zeros((size(dist, 0), size(dist, 0)), float)
+    dp = dist + dpinjuc
+    for i in range(size(dp, 0)):
+        P[i, i] = 1/(dp[i]*dp[i]) # sigmaprio convertido pra metro^2
+    return P, dp
+
+def montA(vante, re):
+    re =array(re,int)
+    vante=array(vante,int)
+    qtPontos = int(max(vante.tolist() + re.tolist()))
+    qtEq = len(re)
+    print("aqui",qtPontos,qtEq)
+    print("aqui",int(qtPontos),qtEq)
+    A= zeros((qtEq,qtPontos),float)
+    for i in range(0,qtEq):
+        if re[i]!=0:
+            print(re[i])
+            A[i][re[i] - 1]=-1
+    for i in range(0,qtEq):
+        if vante[i]!=0:
+            A[i][vante[i] - 1]=1
+    return A
+
+def Xa_parametrico(A,P,Lb):
+    # Retorna o resultado de Xa = inv(A'*P*A)*A'*P*Lb
+    print("A = ", DataFrame(A))
+    x = A.transpose().dot(P).dot(A)
+    print("A'PA = ", DataFrame(x))
+    x = inv(x)
+    print("inv(A'PA) = ",DataFrame(x))
+    x = x.dot(A.transpose().dot(P).dot(Lb))
+    print("inv(A'PA)A'PLb = ",DataFrame(x))
+    return x
+
+def estatistics_sigmaXa(sigma2prio,A,P):
+    # SigmaXa - MVC do valores de X
+    # x = A.transpose().dot(P).dot(A)
+    # print DataFrame(A.transpose().dot(P).dot(A))
+    # print det(A.transpose().dot(P).dot(A))
+    # x = inv(x)
+    return sigma2prio*inv(A.transpose().dot(P).dot(A))
+
+def estatistics_sigmaLa(sigma2,A,P):
+    # SimgaLa - MVC dos valores de La
+    N = inv(A.transpose().dot(P).dot(A))
+    return (A.dot(N).dot(A.transpose()))
+
+def estatistics_sigmaV(sigma2,A,P):
+    # SimgaV - MVC dos residuos
+    N = inv(A.transpose().dot(P).dot(A))
+    return sigma2*(inv(P) - A.dot(N).dot(A.transpose()))
+
+def Wi(V, desvio_vi):
+    wi = []
+    try:
+        for i in range(0,len(V)):
+            wi.append(V[i]/desvio_vi[i])
+    except:
+        for i in range(0, len(V)):
+            wi.append(None)
+    return wi
+
+def get_dp_hi(SigmaXa):
+    desvio_hi=[]
+    try:
+        for i in range(0,len(SigmaXa)):
+            desvio_hi.append(sqrt(SigmaXa[i][i]))
+    except ValueError:
+        for i in range(0, len(SigmaXa)):
+            desvio_hi.append(None)
+    return desvio_hi
+
+def get_dp_vi(SigmaV):
+    desvio_vi=[]
+    try:
+        for i in range(0,len(SigmaV)):
+            desvio_vi.append(sqrt(SigmaV[i][i]))
+    except ValueError:
+        for i in range(0, len(SigmaV)):
+            desvio_vi.append(None)
+    return desvio_vi
