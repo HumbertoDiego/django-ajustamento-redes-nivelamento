@@ -35,7 +35,7 @@ apoio e a metainformação, tudo estará disponível on-line e gratuito.
 
 ## 2. Instalação
 1. Download e install 
-    `python -m pip install --user django-ajunivel-0.1.tar.gz`
+    `python -m pip install --user django-ajunivel-1.0.tar.gz`
 
 2. Add "ajunivel" to your INSTALLED_APPS setting like this::
 ```
