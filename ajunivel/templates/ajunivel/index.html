@@ -33,7 +33,7 @@
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li id="logo">
-                    <a href="{% url 'index' %}"><img src="{% static 'ajunivel/images/logo_IME_thumb.png' %}" alt=""></a>
+                    <a href="{% url 'ajunivel:index' %}"><img src="{% static 'ajunivel/images/logo_IME_thumb.png' %}" alt=""></a>
                 </li>
                 <li id="exec">
                     <a href="#" class="accordion-toggle">
@@ -74,7 +74,7 @@
                             <a href="#"><span class="badge" data-toggle="modal" data-target="#myModal">Ajuda </span></a>  <!-- Button trigger modal -->
                         </h1>
                         <h3 class="col-lg-3">
-                            <form action="{% url 'index' %}" enctype="multipart/form-data" method="post">
+                            <form action="{% url 'ajunivel:index' %}" enctype="multipart/form-data" method="post">
                                 {% csrf_token %}
                                 {{ form }}
                                 <br>
@@ -138,7 +138,7 @@
                         </div>
                         
                         {% elif retorno and erro %}
-                        <div class="boxout">
+                        <div class="col-lg-3 boxout">
                             <img align="right" src="{% static 'ajunivel/images/zumba.jpg' %}" alt = "zumbi" >
                             <h1>
                             OPS! Algo de errado aconteceu...
